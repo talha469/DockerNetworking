@@ -158,4 +158,68 @@ docker exec nginx_web ip addr
 ```
  
 
+## ipvlan Network
+
+**Step 1: Check ip address and create an IPvlan Network** 
+```bash
+Ip addr 
+```
+Specify the parent interface (e.g., eth0, enp0s3, or your host’s physical NIC) and subnet. 
+
+For IPvlan L2 Mode (Layer 2):  
+```bash
+docker network create -d ipvlan --subnet=10.0.2.0/24 --gateway=10.0.2.1 -o ipvlan_mode=l2 -o parent=enp0s3 my-ipvlan-net 
+```
+ 
+
+For IPvlan L3 Mode (Layer 3): 
+```bash
+docker network create -d ipvlan --subnet=10.0.2.0/24 -o ipvlan_mode=l3 -o parent=enp0s3 my-ipvlan-net 
+```
+ 
+
+**Step 2. Check if network is configured** 
+```bash
+Docker network ls 
+```
+ 
+
+**Step 3. Run Containers on the IPvlan Network** 
+
+Assign static IPs from the subnet (or let Docker assign them dynamically). 
+
+Example: NGINX Container with Static IP 
+```bash
+docker run -d --name nginx_web --network my-ipvlan-net nginx:alpine 
+```
+ 
+
+Example: PostgreSQL Container with Static IP 
+```bash
+docker run -d --name postgres_db --network my-ipvlan-net -e POSTGRES_USER=myuser -e POSTGRES_PASSWORD=mypassword postgres:latest 
+```
+ 
+
+**Step 4. Get the Ip address assigned to the containers** 
+```bash
+docker inspect postgres_db 
+docker inspect nginx_web 
+```
+ 
+
+**Step 5. Test Connectivity** 
+
+From the Host Machine: 
+```bash
+ping 10.0.2.2  # NGINX 
+ping 10.0.2.3  # PostgreSQL 
+```
+From the Containers: 
+```bash
+docker exec -it nginx_web sh 
+```
+```bash
+apk add postgresql-client 
+psql -h 192.168.1.101 -U myuser -d postgres 
+```
  
