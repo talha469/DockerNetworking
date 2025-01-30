@@ -1,6 +1,9 @@
 
 # Docker Networking
 
+![image](https://github.com/user-attachments/assets/a7c23585-f68c-457e-8b2a-44e080ff418c)
+
+
 This README serves as a basic guide to Docker networking, introducing fundamental concepts and practical commands to help you understand and test different networking modes. It covers essential Docker network types such as bridge, host, overlay, and macvlan, along with simple demonstrations to set up and experiment with container connectivity. Whether you're new to Docker networking or need a quick reference for testing setups, this guide provides a hands-on approach to learning and troubleshooting container networks.
 <details>
    <summary markdown="span" style="cursor:pointer;"><h2 style="margin:0;">Default Bridge Network</h2></summary>
@@ -339,3 +342,11 @@ Test connectivity
 curl myapp:8080/api/info 
 ```
  </details>
+
+
+ 
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+
