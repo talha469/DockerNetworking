@@ -346,8 +346,8 @@ curl myapp:8080/api/info
 
 ## Acknowledgements
 
- - [Docker Official Documentation](https://docs.docker.com/engine/network/)
- - [Docker Official Documentation](https://github.com/antonputra/tutorials/tree/main/lessons/188)
+ - https://docs.docker.com/engine/network/
+ - https://github.com/antonputra/tutorials/tree/main/lessons/188
 
 
  
