@@ -266,4 +266,63 @@ psql -h 10.0.2.201 -U myuser -d postgres
 docker inspect postgres_db | grep -A 5 '"my-macvlan-net"' | grep '"MacAddress"' | awk -F'"' '{print $4}' 
 docker inspect nginx_web | grep -A 5 '"my-macvlan-net"' | grep '"MacAddress"' | awk -F'"' '{print $4}' 
 ```
+
  
+## Overlay Network
+
+For the demonstration setup, this guide will establish setup with two VM instances named host1 and host2. 
+
+ 
+
+Please follow the following instructions  
+
+ 
+
+Disable the offloading of IP checksum calculations for the network interface on host machine 1 
+
+```bash
+ip addr 
+sudo ethtool -K ens33 tx-checksum-ip-generic off 
+```
+
+Disable the offloading of IP checksum calculations for the network interface on host machine 2 
+```bash
+ip addr 
+sudo ethtool -K ens33 tx-checksum-ip-generic off 
+```
+Initialize docker swarm on host 1  
+```bash 
+docker swarm init
+ ```
+with the key join on the host machine 2
+```bash 
+docker swarm join ... 
+```
+ 
+
+Create overlay network on host 1 
+
+```bash
+docker network create -d overlay --attachable my-overlay-net 
+docker network ls
+``` 
+
+```bash
+Run container on host machine 1 
+ocker run -d --name myapp --network my-overlay-net aputra/myapp-188:v3 
+```
+
+docker network ls on host 2 
+
+```bash
+Run container on host machine 2 
+docker run -dit --name myapp-v2 --network my-overlay-net aputra/myapp-188:v3 
+docker network ls 
+docker exec -it myapp-v2 sh
+```
+
+Test connectivity 
+
+```bash
+curl myapp:8080/api/info 
+```
