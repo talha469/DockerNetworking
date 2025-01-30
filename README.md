@@ -75,7 +75,10 @@ curl http://172.17.0.3
 ```
 
 </details>
-## User Defined Bridge Network
+
+<details>
+   <summary markdown="span" style="cursor:pointer;"><h2 style="margin:0;">User Defined Bridge Network</h2></summary>
+
 
 **Step 1: Create a Custom Bridge Network **
 ```bash
@@ -136,9 +139,11 @@ Test PostgreSQL connectivity (port 5432):
 ```bash
 curl -v telnet://postgres_db:5432 
 ```
- 
+ </details>
 
-## None Network
+<details>
+   <summary markdown="span" style="cursor:pointer;"><h2 style="margin:0;"> None Network</h2></summary>
+
 
 **Step 1: Run PostgreSQL on the None Network** 
 ```bash
@@ -156,9 +161,11 @@ docker run -d --name nginx_web --network none nginx:alpine
 ```bash
 docker exec nginx_web ip addr 
 ```
- 
+ </details>
 
-## ipvlan Network
+<details>
+   <summary markdown="span" style="cursor:pointer;"><h2 style="margin:0;"> ipvlan Network</h2></summary>
+
 
 **Step 1: Check ip address and create an IPvlan Network** 
 ```bash
@@ -222,9 +229,10 @@ docker exec -it nginx_web sh
 apk add postgresql-client 
 psql -h 192.168.1.101 -U myuser -d postgres 
 ```
- 
+  </details>
 
-## macvlan Network
+<details>
+   <summary markdown="span" style="cursor:pointer;"><h2 style="margin:0;">  macvlan Network</h2></summary>
 
 **Step 1.Check Ip Address and Create a Macvlan Network** 
 ```bash
@@ -267,8 +275,11 @@ docker inspect postgres_db | grep -A 5 '"my-macvlan-net"' | grep '"MacAddress"' 
 docker inspect nginx_web | grep -A 5 '"my-macvlan-net"' | grep '"MacAddress"' | awk -F'"' '{print $4}' 
 ```
 
+ </details>
  
-## Overlay Network
+<details>
+   <summary markdown="span" style="cursor:pointer;"><h2 style="margin:0;"> Overlay Network</h2></summary>
+
 
 For the demonstration setup, this guide will establish setup with two VM instances named host1 and host2. 
 
@@ -326,3 +337,4 @@ Test connectivity
 ```bash
 curl myapp:8080/api/info 
 ```
+ </details>
