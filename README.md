@@ -223,3 +223,47 @@ apk add postgresql-client
 psql -h 192.168.1.101 -U myuser -d postgres 
 ```
  
+
+## macvlan Network
+
+**Step 1.Check Ip Address and Create a Macvlan Network** 
+```bash
+ip addr
+```
+
+```bash
+docker network create -d macvlan --subnet=10.0.2.0/24  --gateway=10.0.2.1 --ip-range=10.0.2.200/29 -o parent=enp0s3 my-macvlan-network 
+```
+**Step 2. Run Containers on the Macvlan Network** 
+
+Assign static IPs within your subnet (avoid DHCP conflicts): 
+
+NGINX Container: 
+```bash
+docker run -d --name nginx_web --network my-macvlan-net nginx:alpine 
+```
+PostgreSQL Container: 
+```bash
+docker run -d --name postgres_db --network my-macvlan-net -e POSTGRES_eUSER=myuser -e POSTGRES_PASSWORD=mypassword postgres:latest 
+```
+
+**Step 3. Test Connectivity** 
+
+Ping NGINX 
+```bash
+ping 10.0.2.200 
+```
+Access NGINX via IP 
+```bash
+curl http://10.0.2.200 
+```
+Test PostgreSQL connectivity 
+```bash
+psql -h 10.0.2.201 -U myuser -d postgres 
+```
+**Step 4. Verify MAC Addresses** 
+```bash
+docker inspect postgres_db | grep -A 5 '"my-macvlan-net"' | grep '"MacAddress"' | awk -F'"' '{print $4}' 
+docker inspect nginx_web | grep -A 5 '"my-macvlan-net"' | grep '"MacAddress"' | awk -F'"' '{print $4}' 
+```
+ 
