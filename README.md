@@ -1,8 +1,8 @@
 
 # Docker Networking
 
-
-## Default Bridge Network
+<details>
+   <summary markdown="span" style="cursor:pointer;"><h2 style="margin:0;">Default Bridge Network</h2></summary>
 
 **Step 1: Check docker Network** 
 
@@ -74,7 +74,7 @@ Test connectivity to ngnix using its IP:
 curl http://172.17.0.3 
 ```
 
-
+</details>
 ## User Defined Bridge Network
 
 **Step 1: Create a Custom Bridge Network **
