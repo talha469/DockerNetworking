@@ -137,3 +137,25 @@ Test PostgreSQL connectivity (port 5432):
 curl -v telnet://postgres_db:5432 
 ```
  
+
+## None Network
+
+**Step 1: Run PostgreSQL on the None Network** 
+```bash
+docker run -d --name postgres_db --network none -e POSTGRES_USER=myuser -e POSTGRES_PASSWORD=mypassword postgres:latest 
+```
+ 
+
+**Step 2: Run NGINX on the None Network** 
+```bash
+docker run -d --name nginx_web --network none nginx:alpine 
+```
+ 
+
+**Step 3: Check Ip address** 
+```bash
+docker exec nginx_web ip addr 
+```
+ 
+
+ 
